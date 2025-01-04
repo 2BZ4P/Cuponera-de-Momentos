@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuponera Virtual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #6200ea;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        .coupon {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .coupon-title {
+            font-size: 1.2rem;
+        }
+        .redeem-btn {
+            background-color: #03dac5;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .redeem-btn:hover {
+            background-color: #028f82;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+        }
+        .popup-content h2 {
+            margin-top: 0;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .whatsapp-btn:hover {
+            background-color: #1DA851;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cuponera Virtual</h1>
+        <p>Canjea tus momentos especiales</p>
+    </header>
+    <div class="container" id="coupons">
+        <!-- Los cupones se generarán aquí dinámicamente -->
+    </div>
+
+    <!-- Pop-up -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <button class="close-btn" id="closePopup">&times;</button>
+            <h2 id="popupTitle"></h2>
+            <p id="popupDescription"></p>
+            <button class="whatsapp-btn" id="whatsappBtn">Compartir por WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+        const coupons = [
+            "Una charla sin prisas sobre un tema que te apasione",
+            "Un análisis sociológico de tu película favorita",
+            "Recomendaciones de musicales según tu estado de ánimo",
+            "Un reto semanal para cuidar a tus gatos juntos",
+            "Un intercambio de memes izquierdistas",
+            "Una tarde compartida viendo Wicked (aunque sea virtualmente)",
+            "Una sesión de brainstorming para proyectos o ideas que tengas",
+            "Un espacio para compartir cosas que te hacen reír",
+            "Un debate virtual sobre una serie o película controversial",
+            "Un reto para compartir una foto diaria de tus gatos durante una semana",
+            "Un día para que tú elijas la actividad virtual que haremos juntas",
+            "Una lista de reproducción personalizada para animarte",
+            "Un tutorial o aprendizaje compartido sobre algo nuevo",
+            "Un regalo sorpresa (virtual)",
+            "Un espacio para descargar frustraciones sin juicio",
+            "Una sesión de preguntas existenciales y reflexiones",
+            "Una tarde para planear algo emocionante para el futuro",
+            "Una hora para desconectarnos juntas del mundo y solo estar presentes",
+            "Una lista de películas imprescindibles según tus gustos",
+            "Un recordatorio de tus cualidades maravillosas (a medida)",
+            "Una conversación improvisada sin agenda",
+            "Un día en que yo seré tu asistente personal virtual",
+            "Una tarde para crear memes juntas",
+            "Una guía virtual para organizar un rincón de tu casa",
+            "Un reto para probar algo nuevo en tu rutina",
+            "Una noche temática para hablar de gatos y todo lo relacionado",
+            "Una sesión de exploración sobre un tema sociológico de interés",
+            "Una serie de recomendaciones literarias o de contenido",
+            "Un mensaje de ánimo totalmente inesperado",
+            "Un espacio para quejarte del mundo sin restricciones",
+            "Una sesión de ideas para mejorar cualquier aspecto de tu día a día"
+        ];
+
+        const container = document.getElementById("coupons");
+        const popup = document.getElementById("popup");
+        const popupTitle = document.getElementById("popupTitle");
+        const popupDescription = document.getElementById("popupDescription");
+        const closePopup = document.getElementById("closePopup");
+        const whatsappBtn = document.getElementById("whatsappBtn");
+
+        let currentCoupon = "";
+
+        coupons.forEach((coupon, index) => {
+            const couponDiv = document.createElement("div");
+            couponDiv.className = "coupon";
+            couponDiv.innerHTML = `
+                <span class="coupon-title">Cupón ${index + 1}</span>
+                <button class="redeem-btn" onclick="redeemCoupon('${coupon}')">Canjear</button>
+            `;
+            container.appendChild(couponDiv);
+        });
+
+        function redeemCoupon(coupon) {
+            currentCoupon = coupon;
+            popupTitle.textContent = "¡Has canjeado este cupón!";
+            popupDescription.textContent = coupon;
+            popup.style.display = "flex";
+        }
+
+        closePopup.addEventListener("click", () => {
+            popup.style.display = "none";
+        });
+
+        whatsappBtn.addEventListener("click", () => {
+            const message = `¡He canjeado un cupón especial! 🎉\n\n${currentCoupon}`;
+            const whatsappURL = `https://wa.me/5492613343904?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, "_blank");
+        });
+    </script>
+</body>
+</html>
